@@ -1,74 +1,118 @@
-var last_position_of_x, last_position_of_y;
+var canvas = new fabric.Canvas('myCanvas');
 
-    canvas = document.getElementById('myCanvas');
-    ctx = canvas.getContext("2d");
-    
-    color = "black";
-    width_of_line = 2;
+player_x = 10;
+player_y = 10;
 
-    var width = screen.width;
+block_image_width = 30;
+block_image_height = 30;
 
-    new_width = screen.width - 70;
-    new_height = screen.height - 300;
-     if(width < 992)
-     {
-         document.getElementById("myCanvas").width = new_width;
-         
-         document.getElementById("myCanvas").height = new_height;
+var player_object= "";
+var block_image_object= "";
 
-         document.body.style.overflow = "hidden";
-     }
+function player_update()
+{
+	fabric.Image.fromURL("https://i.postimg.cc/zDwfFdYY/player.png", function(Img) {
+	player_object = Img;
 
-    canvas.addEventListener("touchstart", my_touchstart);
-    
-    function my_touchstart(e)
-    
-    {
-        console.log("my_touchstart");
-        //Addictonal Activity start
-        color = document.getElementById("color").value;
-        width_of_line = document.getElementById("width_of_line").value;
-        //Addictonal Activity ends
+	player_object.scaleToWidth(150);
+	player_object.scaleToHeight(140);
+	player_object.set({
+	top:player_y,
+	left:player_x
+	});
+	canvas.add(player_object);
 
-        last_position_of_x = e.touches[0].clientX - 
-        canvas.offsetLeft;
-
-        last_position_of_y = e.touches[0].clientY - 
-        canvas.offsetRight;
-    }
-
-    
-    canvas.addEventListener("touchmove", my_touchmove);
-    function my_touchmove(e)
-    {
-
-          console.log("my_touchMove");
-          
-         current_position_of_touch_x = e.touches[0].clientX - 15;
-          canvas.offsetLeft;
-          
-         current_position_of_touch_y = e.touches[0].clientY - 15;
-         - canvas.offsetRight;
-
-        
-        ctx.beginPath();
-        ctx.strokeStyle = color;
-        ctx.lineWidth = width_of_line;
-
-        console.log("Last position of x and y coordinates = ");
-        console.log("x = " + last_position_of_x + "y = " + last_position_of_y);
-        ctx.moveTo(last_position_of_x, last_position_of_y);
-
-        console.log("Current position of x and y coordinates = ");
-        console.log("x  = " + current_position_of_touch_x + "y = " + current_position_of_touch_y);
-        ctx.lineTo(current_position_of_touch_x, current_position_of_touch_y);
-        ctx.stroke();
-        
-
-        last_position_of_x = current_position_of_touch_x; 
-        last_position_of_y = current_position_of_touch_y;
-    }
-
-function clearArea () {
-    ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
+	});
 }
+
+function new_image(get_image)
+{
+	fabric.Image.fromURL(get_image, function(Img) {
+	block_image_object = Img;
+
+	block_image_object.scaleToWidth(block_image_width);
+	block_image_object.scaleToHeight(block_image_height);
+	block_image_object.set({
+	top:player_y,
+	left:player_x
+	});
+	canvas.add(block_image_object);
+
+	});
+
+}
+
+
+window.addEventListener("keydown", my_keydown);
+
+function my_keydown(e)
+{
+keyPressed = e.keyCode;
+console.log(keyPressed);
+if(e.shiftKey == true && keyPressed == '80')
+{
+	console.log("p and shift pressed together");
+	block_image_width = block_image_width + 10;
+	block_image_height = block_image_height + 10;
+	document.getElementById("current_width").innerHTML = block_image_width;
+	document.getElementById("current_height").innerHTML = block_image_height;	
+}
+if(e.shiftKey && keyPressed == '77')
+{
+	console.log("m and shift pressed together");
+	block_image_width = block_image_width - 10;
+	block_image_height = block_image_height - 10;
+	document.getElementById("current_width").innerHTML = block_image_width;
+	document.getElementById("current_height").innerHTML = block_image_height;
+}
+
+	if(keyPressed == '70')
+	{
+		new_image('https://i.postimg.cc/hGnyTPLB/ironman-face.png'); 
+		console.log("f");
+	}
+	if(keyPressed == '66')
+	{
+		new_image('https://i.postimg.cc/FscwL6M0/spiderman-body.png'); 
+		console.log("b");
+	}
+	if(keyPressed == '76')
+	{
+		new_image('https://i.postimg.cc/KzF6GDqt/hulk-legs.png'); 
+		console.log("l");
+	}
+	if(keyPressed == '82')
+	{
+		new_image('https://i.postimg.cc/8s8BGtwS/thor-right-hand.png'); 
+		console.log("r");
+	}
+	if(keyPressed == '72')
+	{
+		new_image('https://i.postimg.cc/rw7ckW29/captain-america-left-hand.png'); 
+		console.log("h");
+	}
+
+
+	if(keyPressed == '38')
+	{
+		up();
+		console.log("up");
+	}
+	if(keyPressed == '40')
+	{
+		down();
+		console.log("down");
+	}
+	if(keyPressed == '37')
+	{
+		left();
+		console.log("left");
+	}
+	if(keyPressed == '39')
+	{
+		right();
+		console.log("right");
+	}
+	
+}
+
